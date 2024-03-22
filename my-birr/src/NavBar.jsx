@@ -5,7 +5,7 @@ export default function NavBar() {
       <div className="font-semibold text-3xl">
         <h1>BirrPay</h1>
       </div>
-      <div className=" bg-purple-500 rounded-md p-3  text-gray-100 font-semibold">
+      <div className=" bg-purple-500 rounded-md p-3  text-gray-100 font-semibold  hover:bg-purple-400">
         <button>
             Log out
         </button>
