@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useState } from 'react';
 import Navbar from './NavBar';
 import Home from './Home';
-import Modal from './Modal';
+import Modal from 'Modal';
 import LoginPage from './LoginPage';
 
 const App = () => {
