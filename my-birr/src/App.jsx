@@ -3,8 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import Navbar from './NavBar';
+import Modal from './Modal';
 import Home from './Home';
-import Modal from 'Modal';
+
 import LoginPage from './LoginPage';
 
 const App = () => {
