@@ -1,8 +1,11 @@
+import { Link } from 'react-router-dom';
 const Home = ({ openModal, openEditModal, deleteItem, items }) => {
   return (
     <div className="min-h-screen  items-center justify-center bg-gray-200">
       <div className="flex justify-between p-4">
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">See orders</button>
+      <Link to="/orders">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">See Orders</button>
+      </Link>
       <button onClick={openModal} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Subscription</button>
       </div>
       <ul className="mt-4 p-4">
@@ -19,13 +22,12 @@ const Home = ({ openModal, openEditModal, deleteItem, items }) => {
             </div>
                 </div>
                 
-              <div>
-                <button onClick={() => openEditModal(item)} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded-full mr-2">
-                  Edit
-                </button>
-                <button onClick={() => deleteItem(item.id)} className="bg-red-200 hover:bg-red-300 text-red-800 font-bold py-1 px-2 rounded-full">
-                  Delete
-                </button>
+              <div className='flex space-x-6 h-10'>
+                <img src="./edit.png" alt='edit' onClick={() => openEditModal(item)}  />
+                  
+                <img src="./delete.png" alt="delete" onClick={() => deleteItem(item.id)}  />
+                  
+                
                 </div>
               </div>
           
