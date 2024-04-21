@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const Navbar = ({ onLogout }) => {
   return (
@@ -7,12 +7,19 @@ const Navbar = ({ onLogout }) => {
         <span className="font-semibold text-3xl tracking-tight">BirrPay</span>
       </div>
       <div className="block lg:hidden">
-        <button className="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-white hover:border-white" onClick={onLogout}>
+        <button
+          className="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-white hover:border-white"
+          onClick={onLogout}
+        >
           Logout
         </button>
       </div>
       <div className="hidden lg:block">
-        <Link to="/login" className="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-white hover:border-white" onClick={onLogout}>
+        <Link
+          to="/login"
+          className="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-white hover:border-white"
+          onClick={onLogout}
+        >
           Logout
         </Link>
       </div>
