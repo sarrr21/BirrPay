@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 import { createClient } from "@supabase/supabase-js";
+import { supabase } from "./constants";
 
-const supabase = createClient(
-  "https://jhntnbdxccwkurctzccv.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpobnRuYmR4Y2N3a3VyY3R6Y2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE2OTE5NTIsImV4cCI6MjAyNzI2Nzk1Mn0.A34WrCmyqjcFvjSeuf4dAoHsfbRYTCIAobGYHS8H0ME"
-);
+// const supabase = createClient(
+//   "https://jhntnbdxccwkurctzccv.supabase.co",
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpobnRuYmR4Y2N3a3VyY3R6Y2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE2OTE5NTIsImV4cCI6MjAyNzI2Nzk1Mn0.A34WrCmyqjcFvjSeuf4dAoHsfbRYTCIAobGYHS8H0ME"
+// );
 
 const OrderList = () => {
   // const [orders, setOrders] = useState([]);
@@ -102,10 +103,7 @@ const OrderList = () => {
             <p>{order.subscription_price}</p>
 
             <Link
-              to={{
-                pathname: `/order/${order.id}`, // Navigate to order detail page
-                state: { order: order }, // Pass order data as state
-              }}
+              to={`/order/${order.id}`}
               className="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-blue-100 hover:border-white"
             >
               View

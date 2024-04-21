@@ -69,7 +69,7 @@ const App = () => {
         <Route path="/" element={<AuthenticatedApp />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<Orders orders={orders} />} />
-        <Route path="/order/:orderId" />
+        <Route path="/order/:id" element={<OrderDetail />} />
         {/* Add a route for "/orders" */}
         <Route path="/orders" element={<Orders orders={orders} />} />
       </Routes>
