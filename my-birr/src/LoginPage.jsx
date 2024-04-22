@@ -4,8 +4,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Perform login actions, such as validating credentials
-    // Example: If credentials are valid, redirect to home page
+   
     navigate("/");
   };
 

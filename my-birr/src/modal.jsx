@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { supabase } from "./constants";
+
 const Modal = ({ isOpen, onClose, addItem, editItem, itemToEdit }) => {
   const [imageUrl, setImageUrl] = useState(
     itemToEdit ? itemToEdit.imageUrl : ""
@@ -11,7 +13,7 @@ const Modal = ({ isOpen, onClose, addItem, editItem, itemToEdit }) => {
   const [period, setPeriod] = useState(itemToEdit ? itemToEdit.period : "");
   const [price, setPrice] = useState(itemToEdit ? itemToEdit.price : "");
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
     if (itemToEdit) {
       editItem(itemToEdit.id, imageUrl, title, description, period, price);
     } else {
@@ -23,6 +25,30 @@ const Modal = ({ isOpen, onClose, addItem, editItem, itemToEdit }) => {
     setPeriod("");
     setPrice("");
     onClose();
+
+    try {
+      // Make the API call to insert the new subscription item
+      const { data, error } = await supabase.from("subscriptions").insert([
+        {
+          logo_link: imageUrl,
+          brand_name: title,
+          description: description,
+        },
+      ]);
+
+      if (error) {
+        throw error;
+      }
+
+      // Handle success, you might want to show a success message or close the modal
+      console.log("Item added successfully:", data);
+
+      // Close the modal
+      onClose();
+    } catch (error) {
+      console.error("Error adding item:", error.message);
+      // Handle error, you might want to show an error message to the user
+    }
   };
 
   return (
@@ -92,7 +118,7 @@ const Modal = ({ isOpen, onClose, addItem, editItem, itemToEdit }) => {
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md mb-2 resize-none h-32"
                         placeholder="Description"
                       ></textarea>
-                      <input
+                      {/* <input
                         type="text"
                         value={period}
                         onChange={(e) => setPeriod(e.target.value)}
@@ -105,7 +131,7 @@ const Modal = ({ isOpen, onClose, addItem, editItem, itemToEdit }) => {
                         onChange={(e) => setPrice(e.target.value)}
                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md mb-2"
                         placeholder="Price"
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>
