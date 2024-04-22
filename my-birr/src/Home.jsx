@@ -27,6 +27,10 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
     fetchItems();
   }, []);
 
+  if (loading) {
+    return <div className="content-center">Loading...</div>;
+  }
+
   if (!items) {
     return <div>Order not found</div>;
   }
