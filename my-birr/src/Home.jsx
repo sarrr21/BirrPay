@@ -35,24 +35,25 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
     return <div>Order not found</div>;
   }
   return (
-    <div className="min-h-screen  items-center justify-center bg-gray-200">
-      <div className="flex justify-between p-4">
+    <div>
+      <div className="flex justify-between p-4 ">
         <Link to="/orders">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button className="btn btn-outline btn-accent font-bold py-2 px-4 rounded">
             See Orders
           </button>
         </Link>
         <button
           onClick={openModal}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="btn btn-outline btn-accent font-bold py-2 px-4 rounded"
         >
           Add Subscription
         </button>
       </div>
+
       <ul className="mt-4 p-4">
         {items.map((item) => (
-          <li key={item.id} className="bg-white shadow-md rounded p-4 m-2">
-            <div className="flex justify-between items-center">
+          <li key={item.id} className=" rounded p-4 m-2">
+            <div className="rounded-lg border-2 border-emerald-600 flex justify-between items-center ">
               <div className="flex  ">
                 <img
                   src={item.logo_link}
