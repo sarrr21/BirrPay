@@ -62,7 +62,9 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
                 />
                 <div>
                   <h1 className="font-bold text-2xl">{item.brand_name}</h1>
-                  <p className="mt-1">{item.description}</p>
+                  <div className="container w-96 ">
+                    <p className="mt-1">{item.description}</p>
+                  </div>
                 </div>
               </div>
 
@@ -70,12 +72,14 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
                 <img
                   src="https://img.icons8.com/carbon-copy/100/create-new.png"
                   alt="edit"
+                  style={{ filter: "brightness(0) invert(1)" }}
                   onClick={() => openEditModal(item)}
                 />
 
                 <img
                   src="https://img.icons8.com/ios/100/delete-trash.png"
                   alt="delete"
+                  style={{ filter: "brightness(0) invert(1)" }}
                   onClick={() => deleteItem(item.id)}
                 />
               </div>
