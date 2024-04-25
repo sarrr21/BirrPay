@@ -1,9 +1,13 @@
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { supabase } from "./constants";
 import { useState } from "react";
 import { useEffect } from "react";
+import Navbar from "./NavBar";
 
 const OrderDetail = () => {
+  const handleLogout = () => {
+    return <Navigate to="/login" replace />;
+  };
   const { id } = useParams();
   console.log("--------------------");
   console.log(id + "         something is not working ");
@@ -71,54 +75,73 @@ const OrderDetail = () => {
   console.log(order);
 
   return (
-    <div className="bg-gray-200 min-h-screen p-16">
-      <h1 className="text-3xl font-bold mb-4 text-white">Order Detail</h1>
-      <div className="border p-4 rounded-lg text-blue-400 text-xl">
-        <p>
-          <span className="font-semibold">Name:</span> {order?.fullname}
-        </p>
-        <p>
-          <span className="font-semibold">Email:</span> {order?.email}
-        </p>
-        <p>
-          <span className="font-semibold">Phone Number:</span> {order?.phone}
-        </p>
-        <p>
-          <span className="font-semibold">Item Name:</span> {order?.brand_name}
-        </p>
-        <p>
-          <span className="font-semibold">Price:</span>{" "}
-          {order?.subscription_price}
-        </p>
-        <p>
-          <span className="font-semibold">Subscription Period:</span>{" "}
-          {order?.subscription_period}
-        </p>
-
-        <p>
-          <span className="font-semibold">SUBSCRIPTION EMAIL:</span>{" "}
-          {order?.subscription_email}
-        </p>
-        <div className="flex space-x-10 mt-4">
+    <>
+      <Navbar />
+      <div className="p-16">
+        <h1 className="text-3xl font-bold mb-4 text-white">Order Detail</h1>
+        <div className="border border-emerald-400 p-4 rounded-lg text-blue-400 text-xl ">
           <p>
-            <img
-              src={order?.receipt_link}
-              alt="Attached"
-              className="h-120 w-160 bg-gray-400"
-            />
+            <span className="font-semibold font-mono text-cyan-50">Name:</span>{" "}
+            {order?.fullname}
           </p>
-          <p className="bg-gray-400 text-black p-16 ">
-            <span className="font-semibold"></span>
-            {order?.remarks}
+          <p>
+            <span className="font-semibold font-mono text-cyan-50">Email:</span>{" "}
+            {order?.email}
           </p>
-        </div>
-        <div className="item-center">
-          <button className="bg-blue-400 text-white rounded-md p-2 mt-4">
-            Subscription Done
-          </button>
+          <p>
+            <span className="font-semibold font-mono text-cyan-50">
+              Phone Number:
+            </span>{" "}
+            {order?.phone}
+          </p>
+          <p>
+            <span className="font-semibold font-mono text-cyan-50">
+              Item Name:
+            </span>{" "}
+            {order?.brand_name}
+          </p>
+          <p>
+            <span className="font-semibold font-mono text-cyan-50">Price:</span>{" "}
+            {order?.subscription_price}
+          </p>
+          <p>
+            <span className="font-semibold text-cyan-50">
+              Subscription Period:
+            </span>{" "}
+            {order?.subscription_period}
+          </p>
+
+          <p>
+            <span className="font-semibold text-cyan-50">
+              SUBSCRIPTION EMAIL:
+            </span>{" "}
+            {order?.subscription_email}
+          </p>
+          <div className="flex space-x-10 mt-4">
+            <p>
+              <div className="">
+                <img
+                  src={order?.receipt_link}
+                  alt="Attached"
+                  className="w-72 h-90 bg-gray-400"
+                />
+              </div>
+            </p>
+            <div className="border rounded-md p-5 bg-sky-200 w-96 h-90">
+              <p className=" text-black  ">
+                <span className="font-semibold"></span>
+                {order?.remarks}
+              </p>
+            </div>
+          </div>
+          <div className="item-center">
+            <button className="bg-emerald-400 text-black rounded-md p-2 mt-4">
+              Subscription Done
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

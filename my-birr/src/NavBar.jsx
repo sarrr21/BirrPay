@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const Navbar = ({ onLogout }) => {
   return (
@@ -82,25 +82,15 @@ const Navbar = ({ onLogout }) => {
               />
             </svg>
           </button>
-          <button className="btn btn-ghost btn-circle">
-            <div className="indicator">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                />
-              </svg>
-              <span className="badge badge-xs badge-primary indicator-item"></span>
-            </div>
-          </button>
+
+          <div className="block mx-2 ">
+            <button
+              className="w-20 flex items-center px-16 py-2 border rounded text-blue-200 btn btn-outline p-2 mt-4 btn-accent hover:text-white hover:border-white"
+              onClick={onLogout}
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
     </nav>

@@ -38,13 +38,13 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
     <div>
       <div className="flex justify-between p-4 ">
         <Link to="/orders">
-          <button className="btn btn-outline btn-accent font-bold py-2 px-4 rounded">
+          <button className="mx-16 btn btn-outline btn-accent font-bold py-2 px-4 rounded">
             See Orders
           </button>
         </Link>
         <button
           onClick={openModal}
-          className="btn btn-outline btn-accent font-bold py-2 px-4 rounded"
+          className="mx-16 btn btn-outline btn-accent font-bold py-2 px-4 rounded"
         >
           Add Subscription
         </button>

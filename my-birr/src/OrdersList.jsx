@@ -1,4 +1,4 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -6,32 +6,14 @@ import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./constants";
 import Navbar from "./NavBar";
 
-// const supabase = createClient(
-//   "https://jhntnbdxccwkurctzccv.supabase.co",
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpobnRuYmR4Y2N3a3VyY3R6Y2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE2OTE5NTIsImV4cCI6MjAyNzI2Nzk1Mn0.A34WrCmyqjcFvjSeuf4dAoHsfbRYTCIAobGYHS8H0ME"
-// );
-
 const OrderList = () => {
-  // const [orders, setOrders] = useState([]);
-  // useEffect(() => {
-  //   getOrders();
-  // }, []);
-  // useEffect(() => {
-  //   getOrders();
-  // }, []);
-  // async function getOrders() {
-  //   const { data } = await supabase.from("orders").select();
-
-  //   setOrders(data);
-  // }
-
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   const handleLogout = () => {
-    // Perform logout actions, such as clearing session storage
-    // Example: Redirecting to login page
-    return <Navigate to="/login" replace />;
+    console.log("tshirt alelesh-------------------");
+    history.push("/login");
   };
 
   useEffect(() => {
@@ -102,7 +84,7 @@ const OrderList = () => {
   }
   return (
     <div className="">
-      <Navbar />
+      <Navbar onLogout={handleLogout} />
       <h1 className="text-3xl font-bold mb-4 p-8  text-white">Orders</h1>
       <div className="space-y-4 flex  items-center">
         <p className="mx-10 font-semibold">id</p>
