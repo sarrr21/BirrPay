@@ -1,4 +1,4 @@
-import { Link, Navigate} from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -9,11 +9,9 @@ import Navbar from "./NavBar";
 const OrderList = () => {
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(true);
-  const history = useHistory();
 
   const handleLogout = () => {
     console.log("tshirt alelesh-------------------");
-    
   };
 
   useEffect(() => {
