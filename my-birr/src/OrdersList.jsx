@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./constants";
+import Navbar from "./NavBar";
 
 // const supabase = createClient(
 //   "https://jhntnbdxccwkurctzccv.supabase.co",
@@ -25,6 +26,13 @@ const OrderList = () => {
   // }
 
   const [order, setOrder] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleLogout = () => {
+    // Perform logout actions, such as clearing session storage
+    // Example: Redirecting to login page
+    return <Navigate to="/login" replace />;
+  };
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -79,28 +87,62 @@ const OrderList = () => {
         );
 
         setOrder(ordersWithUser);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching orders:", error.message);
+        setLoading(false);
       }
     };
 
     fetchOrders();
   }, []); // Run once on component mount
 
+  if (loading) {
+    return <div className="content-center">Loading...</div>;
+  }
   return (
-    <div className="  bg-gray-200 min-h-screen ">
-      <h1 className="text-3xl font-bold mb-4 p-8  text-blue-950">Orders</h1>
+    <div className="">
+      <Navbar />
+      <h1 className="text-3xl font-bold mb-4 p-8  text-white">Orders</h1>
+      <div className="space-y-4 flex  items-center">
+        <p className="mx-10 font-semibold">id</p>
+        <div className="m-20 font-semibold ">
+          {" "}
+          <h2 className="text-lg font-semibold">Full Name</h2>
+        </div>
+        <div className="m-20">
+          {" "}
+          <p className="text-lg font-semibold">Brand Name</p>{" "}
+        </div>
+        <div className="m-20 font-semibold">
+          <p>Suscription Period</p>{" "}
+        </div>
+        <div className="m-20 font-semibold">
+          <p>Subscription Price</p>
+        </div>
+      </div>
 
       <ul>
         {order.map((order) => (
           <li
             key={order.id}
-            className="border p-4 rounded-lg mx-8 bg-white text-blue-400 space-y-4 flex justify-between items-center"
+            className=" border-emerald-400 border p-4 m-5 rounded-lg mx-8  text-gray-100 space-y-4 flex justify-between items-center"
           >
-            <h2 className="text-lg font-semibold">{order.fullname}</h2>
-            <p className="text-lg font-semibold">{order.brand_name}</p>
-            <p>{order.subscription_period}</p>
-            <p>{order.subscription_price}</p>
+            <p>{order.id}</p>
+            <div className="w-40">
+              {" "}
+              <h2 className="text-lg font-semibold">{order.fullname}</h2>
+            </div>
+            <div className="w-40">
+              {" "}
+              <p className="text-lg font-semibold">{order.brand_name}</p>{" "}
+            </div>
+            <div className="w-40">
+              <p>{order.subscription_period}</p>{" "}
+            </div>
+            <div className="w-40">
+              <p>{order.subscription_price}</p>
+            </div>
 
             <Link
               to={`/order/${order.id}`}
