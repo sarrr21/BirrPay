@@ -44,8 +44,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
-      <div className="max-w-md w-full bg-white p-8 rounded shadow-md">
+    <div className="min-h-screen flex items-center rounded-xl justify-center bg-gray-200">
+      <div className="max-w-md w-full rounded-xl bg-white p-8 rounded shadow-md">
         <h1 className="text-3xl mb-4 font-semibold">BirrPay</h1>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="mb-4">
@@ -58,7 +58,7 @@ const LoginPage = () => {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="form-input border rounded border-black text-black mt-1 block w-full"
+              className="input  bg-white input-bordered input-primary w-full max-w-xs"
             />
           </div>
           <div className="mb-4">
@@ -71,7 +71,7 @@ const LoginPage = () => {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="form-input border rounded border-black text-black mt-1 block w-full"
+              className="input bg-white input-bordered input-primary w-full max-w-xs"
             />
           </div>
           {error && <p style={{ color: "red" }}>{error}</p>}

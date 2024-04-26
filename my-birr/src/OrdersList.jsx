@@ -78,26 +78,32 @@ const OrderPage = () => {
   }, []); // Run once on component mount
 
   if (loading) {
-    return <div className="content-center">Loading...</div>;
+    return (
+      <div className="bg-[#1d232a] w-screen h-screen flex justify-center items-center text-white">
+        Loading
+        <span className="p-2"></span>
+        <span className="loading loading-bars loading-lg"></span>
+      </div>
+    );
   }
   return (
-    <div className="">
+    <div className="bg-[#1d232a] w-full h-fit">
       <Navbar onLogout={handleLogout} />
       <h1 className="text-3xl font-bold mb-4 p-8  text-white">Orders</h1>
       <div className="space-y-4 flex  items-center">
-        <p className="mx-10 font-semibold">id</p>
+        <p className="mx-10 text-white font-semibold ">id</p>
         <div className="m-20 font-semibold ">
           {" "}
-          <h2 className="text-lg font-semibold">Full Name</h2>
+          <h2 className="text-lg text-white  font-semibold">Full Name</h2>
         </div>
         <div className="m-20">
           {" "}
-          <p className="text-lg font-semibold">Brand Name</p>{" "}
+          <p className="text-lg text-white  font-semibold">Brand Name</p>{" "}
         </div>
-        <div className="m-20 font-semibold">
+        <div className="m-20 text-white  font-semibold">
           <p>Suscription Period</p>{" "}
         </div>
-        <div className="m-20 font-semibold">
+        <div className="m-20 text-white  font-semibold">
           <p>Subscription Price</p>
         </div>
       </div>
@@ -106,7 +112,7 @@ const OrderPage = () => {
         {order.map((order) => (
           <li
             key={order.id}
-            className=" border-emerald-400 border p-4 m-5 rounded-lg mx-8  text-gray-100 space-y-4 flex justify-between items-center"
+            className=" border-emerald-400 border p-4 m-5 rounded-lg mx-8  text-white space-y-4 flex justify-between items-center"
           >
             <p>{order.id}</p>
             <div className="w-40">

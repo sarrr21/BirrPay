@@ -19,14 +19,22 @@ import OrderPage from "./OrdersList";
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route exact path="/" element={<PrivateRoute />}>
-          <Route exact path="/" element={<HomePage />} />
-          <Route exact path="/orders" element={<OrderPage />} />
-          <Route path="/orders/:id" element={<OrderDetail />} />
-        </Route>
-      </Routes>
+      <div
+        style={{
+          backgroundColor: "#1d232a",
+          // color: "white",
+          minHeight: "100vh",
+        }}
+      >
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route exact path="/" element={<PrivateRoute />}>
+            <Route exact path="/" element={<HomePage />} />
+            <Route exact path="/orders" element={<OrderPage />} />
+            <Route path="/orders/:id" element={<OrderDetail />} />
+          </Route>
+        </Routes>
+      </div>
     </Router>
   );
 };

@@ -75,7 +75,7 @@ const OrderDetail = () => {
   console.log(order);
 
   return (
-    <>
+    <div className="">
       <Navbar />
       <div className="p-16">
         <h1 className="text-3xl font-bold mb-4 text-white">Order Detail</h1>
@@ -141,7 +141,7 @@ const OrderDetail = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -9,7 +9,7 @@ const Navbar = ({ onLogout }) => {
   };
 
   return (
-    <nav className="flex items-center justify-between flex-wrap  p-6">
+    <nav className=" flex items-center justify-between flex-wrap  p-6">
       {/* <div className="flex items-center flex-shrink-0 text-white mr-6">
         <span className="font-semibold text-3xl tracking-tight">BirrPay</span>
       </div>
@@ -30,13 +30,13 @@ const Navbar = ({ onLogout }) => {
           Logout
         </Link>
       </div> */}
-      <div className="navbar ">
+      <div className="navbar bg-[#1d232a]">
         <div className="navbar-start">
           <div className="dropdown">
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost btn-circle"
+              className="btn text-white btn-ghost btn-circle"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -58,38 +58,22 @@ const Navbar = ({ onLogout }) => {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a>Homepage</a>
+                <Link to="/">
+                  <a>Homepage</a>
+                </Link>
               </li>
               <li>
-                <a>Orders</a>
-              </li>
-              <li>
-                <a>Logout</a>
+                <Link to={"/orders"}>
+                  <a>Orders</a>
+                </Link>
               </li>
             </ul>
           </div>
         </div>
         <div className="navbar-center">
-          <a className="btn btn-ghost text-xl">BirrPay</a>
+          <a className="btn btn-ghost text-white text-xl">BirrPay</a>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-ghost btn-circle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
-
           <div className="block mx-2 ">
             <button
               className="w-20 flex items-center px-16 py-2 border rounded text-blue-200 btn btn-outline p-2 mt-4 btn-accent hover:text-white hover:border-white"
