@@ -17,7 +17,6 @@ const OrderPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        // Fetch orders
         const { data: ordersData, error: ordersError } = await supabase
           .from("orders")
           .select("*");
@@ -26,12 +25,23 @@ const OrderPage = () => {
           throw ordersError;
         }
 
-        // Fetch user information for each order
         const ordersWithUser = await Promise.all(
           ordersData.map(async (order) => {
+            // Check if user_id or subscription_id is null
+            if (!order.user_id || !order.subscription_id) {
+              return {
+                ...order,
+                email: "Unknown",
+                fullname: "Unknown",
+                phone: "Unknown",
+                logo_link: "Unknown",
+                brand_name: "Unknown",
+              };
+            }
+
+            // Fetch user information for each order
             const { data: userData, error: userError } = await supabase
               .from("users")
-
               .select("fullname, phone, email")
               .eq("id", order.user_id)
               .single();
