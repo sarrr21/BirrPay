@@ -58,7 +58,7 @@ const LoginPage = () => {
               name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="form-input mt-1 block w-full"
+              className="form-input border rounded border-black text-black mt-1 block w-full"
             />
           </div>
           <div className="mb-4">
@@ -71,7 +71,7 @@ const LoginPage = () => {
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="form-input mt-1 block w-full"
+              className="form-input border rounded border-black text-black mt-1 block w-full"
             />
           </div>
           {error && <p style={{ color: "red" }}>{error}</p>}
