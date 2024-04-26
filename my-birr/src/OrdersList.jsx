@@ -6,7 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./constants";
 import Navbar from "./NavBar";
 
-const OrderList = () => {
+const OrderPage = () => {
   const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -125,7 +125,7 @@ const OrderList = () => {
             </div>
 
             <Link
-              to={`/order/${order.id}`}
+              to={`/orders/${order.id}`}
               className="flex items-center px-3 py-2 border rounded text-blue-200 border-blue-400 hover:text-blue-100 hover:border-white"
             >
               View
@@ -137,4 +137,4 @@ const OrderList = () => {
   );
 };
 
-export default OrderList;
+export default OrderPage;

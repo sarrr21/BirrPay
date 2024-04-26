@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "./constants";
-const Home = ({ openModal, openEditModal, deleteItem }) => {
+import Navbar from "./NavBar";
+const HomePage = ({ openModal, openEditModal, deleteItem }) => {
   const [items, setItems] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,6 +37,7 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
   }
   return (
     <div>
+      <Navbar />
       <div className="flex justify-between p-4 ">
         <Link to="/orders">
           <button className="mx-16 btn btn-outline btn-accent font-bold py-2 px-4 rounded">
@@ -43,12 +45,46 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
           </button>
         </Link>
         <button
-          onClick={openModal}
+          onClick={() => document.getElementById("my_modal_5").showModal()}
           className="mx-16 btn btn-outline btn-accent font-bold py-2 px-4 rounded"
         >
           Add Subscription
         </button>
       </div>
+
+      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Add Subscription</h3>
+
+          <div className="">
+            <form method="dialog">
+              <input
+                type="text"
+                placeholder="Image URL"
+                className="input input-bordered input-success w-full max-w-xs my-4"
+              />
+              <input
+                type="text"
+                placeholder="Brand Name"
+                className="input input-bordered input-success w-full max-w-xs my-4"
+              />
+              <textarea
+                className="textarea textarea-accent my-4"
+                placeholder="Bio"
+              ></textarea>
+              {/* if there is a button in form, it will close the modal */}
+              <div className="flex gap-36 items-center text-white">
+                <button className="btn text-white px-8 bg-indigo-500 mx-10 items-center">
+                  Add
+                </button>
+                <button className="btn text-white px-8 bg-indigo-500 items-center">
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </dialog>
 
       <ul className="mt-4 p-4">
         {items.map((item) => (
@@ -91,4 +127,4 @@ const Home = ({ openModal, openEditModal, deleteItem }) => {
   );
 };
 
-export default Home;
+export default HomePage;

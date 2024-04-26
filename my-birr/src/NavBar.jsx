@@ -1,6 +1,13 @@
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Navbar = ({ onLogout }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    localStorage.removeItem("userEmailBirrPay");
+    navigate("/login");
+  };
+
   return (
     <nav className="flex items-center justify-between flex-wrap  p-6">
       {/* <div className="flex items-center flex-shrink-0 text-white mr-6">
@@ -86,7 +93,7 @@ const Navbar = ({ onLogout }) => {
           <div className="block mx-2 ">
             <button
               className="w-20 flex items-center px-16 py-2 border rounded text-blue-200 btn btn-outline p-2 mt-4 btn-accent hover:text-white hover:border-white"
-              onClick={onLogout}
+              onClick={handleLogout}
             >
               Logout
             </button>

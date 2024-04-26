@@ -1,109 +1,33 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Route,
   Navigate,
   Routes,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import Navbar from "./NavBar";
-import Home from "./Home";
+import HomePage from "./Home";
 import Modal from "./modal";
 // import Modal from "./Modal";
 import LoginPage from "./LoginPage";
 import Orders from "./OrdersList";
 import OrderDetail from "./OrdersDetail";
+import { AuthProvider } from "./AuthProvider";
+import PrivateRoute from "./PrivateRoute";
+import OrderPage from "./OrdersList";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AuthenticatedApp />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<Orders />} />
-        <Route path="/order/:id" element={<OrderDetail />} />
-        {/* Add a route for "/orders" */}
-        <Route path="/orders" element={<Orders />} />
+        <Route exact path="/" element={<PrivateRoute />}>
+          <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/orders" element={<OrderPage />} />
+          <Route path="/orders/:id" element={<OrderDetail />} />
+        </Route>
       </Routes>
     </Router>
-  );
-};
-
-const AuthenticatedApp = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [items, setItems] = useState([]);
-  const [itemToEdit, setItemToEdit] = useState(null);
-
-  const handleLogout = () => {
-    return <Navigate to="/login" replace />;
-  };
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const openEditModal = (item) => {
-    setIsEditModalOpen(true);
-    setItemToEdit(item);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setIsEditModalOpen(false);
-    setItemToEdit(null);
-  };
-
-  const addItem = (imageUrl, title, description, period, price) => {
-    const newItem = {
-      id: Date.now(),
-      imageUrl: imageUrl,
-      title: title,
-      description: description,
-      period: period,
-      price: price,
-    };
-    setItems([...items, newItem]);
-  };
-
-  const editItem = (itemId, imageUrl, title, description, period, price) => {
-    const updatedItems = items.map((item) => {
-      if (item.id === itemId) {
-        return {
-          ...item,
-          imageUrl: imageUrl,
-          title: title,
-          description: description,
-          period: period,
-          price: price,
-        };
-      }
-      return item;
-    });
-    setItems(updatedItems);
-  };
-
-  const deleteItem = (itemId) => {
-    const updatedItems = items.filter((item) => item.id !== itemId);
-    setItems(updatedItems);
-  };
-
-  return (
-    <>
-      <Navbar onLogout={handleLogout} />
-      <Home
-        openModal={openModal}
-        openEditModal={openEditModal}
-        deleteItem={deleteItem}
-        items={items}
-      />
-      <Modal isOpen={isModalOpen} onClose={closeModal} addItem={addItem} />
-      <Modal
-        isOpen={isEditModalOpen}
-        onClose={closeModal}
-        editItem={editItem}
-        itemToEdit={itemToEdit}
-      />
-    </>
   );
 };
 
