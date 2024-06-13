@@ -90,6 +90,20 @@ const HomePage = () => {
       fetchPrices(selectedSubscription); // Refresh prices after updating
     }
   };
+  const toggleEditMode = (id) => {
+    setPrices((prevPrices) =>
+      prevPrices.map((price) =>
+        price.id === id
+          ? { ...price, isEditing: !price.isEditing }
+          : { ...price, isEditing: false }
+      )
+    );
+  };
+
+  const savePrice = async (id, updatedPrice) => {
+    await handleUpdatePrice(id, updatedPrice);
+    toggleEditMode(id); // Exit edit mode after saving
+  };
 
   const handleDeletePrice = async (priceId) => {
     const { error } = await supabase
@@ -233,104 +247,157 @@ const HomePage = () => {
       <Navbar />
 
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-xl mb-4">Add Price</h2>
-            <div className="mb-4">
-              <label className="block text-gray-700">Period</label>
-              <input
-                type="text"
-                value={period}
-                onChange={(e) => setPeriod(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Price</label>
-              <input
-                type="text"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded mt-1"
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                onClick={handleCloseModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddPrice}
-                className="bg-blue-500 text-white px-4 py-2 rounded"
-              >
-                Add
-              </button>
+        <dialog
+          id="add_price_modal"
+          className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-90 flex items-center justify-center"
+        >
+          <div className="modal-dialog bg-black rounded-lg shadow-lg w-96">
+            <div className="modal-content p-4">
+              <h2 className="text-xl mb-4">Add Price</h2>
+              <div className="mb-4">
+                <label className="block text-white">Period</label>
+                <input
+                  type="text"
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                  placeholder="Enter period..."
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-white">Price</label>
+                <input
+                  type="text"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded mt-1"
+                  placeholder="Enter price..."
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={handleCloseModal}
+                  className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAddPrice}
+                  className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                  Add
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </dialog>
       )}
 
       {isViewPricesModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-lg">
-            <h2 className="text-xl mb-4">
-              Prices for Subscription {selectedSubscription}
-            </h2>
-            <ul>
-              {prices.map((price) => (
-                <li
-                  key={price.id}
-                  className="flex justify-between items-center border-b border-gray-300 py-2"
+        <dialog
+          id="view_prices_modal"
+          className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-85 flex items-center justify-center "
+        >
+          <div className="modal-dialog bg-black bg-opacity-50  rounded-lg shadow-lg w-auto">
+            <div className="modal-content p-4">
+              <h2 className="text-xl mb-4">
+                Prices for Subscription {selectedSubscription}
+              </h2>
+              <ul>
+                {prices.map((price) => (
+                  <li
+                    key={price.id}
+                    className="flex justify-between items-center border-b border-gray-300 py-2"
+                  >
+                    <div className="px-5">
+                      {/* Display period and price as text or input based on edit mode */}
+                      {price.isEditing ? (
+                        <>
+                          <input
+                            type="text"
+                            value={price.period}
+                            onChange={(e) => {
+                              const newPeriod = e.target.value;
+                              setPrices((prevPrices) =>
+                                prevPrices.map((prevPrice) =>
+                                  prevPrice.id === price.id
+                                    ? { ...prevPrice, period: newPeriod }
+                                    : prevPrice
+                                )
+                              );
+                            }}
+                            className="border rounded px-2 py-1 mr-2"
+                          />
+                          <input
+                            type="number"
+                            value={price.price}
+                            onChange={(e) => {
+                              const newPrice = e.target.value;
+                              setPrices((prevPrices) =>
+                                prevPrices.map((prevPrice) =>
+                                  prevPrice.id === price.id
+                                    ? { ...prevPrice, price: newPrice }
+                                    : prevPrice
+                                )
+                              );
+                            }}
+                            className="border rounded px-2 py-1"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <p className="font-semibold">
+                            Period: {price.period}
+                          </p>
+                          <p className="font-semibold">Price: {price.price}</p>
+                        </>
+                      )}
+                    </div>
+                    <div>
+                      {/* Edit and Delete buttons */}
+                      {price.isEditing ? (
+                        <button
+                          onClick={() =>
+                            savePrice(price.id, {
+                              period: price.period,
+                              price: price.price,
+                            })
+                          }
+                          className="bg-blue-500 text-white px-4 py-1 rounded mr-2"
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => toggleEditMode(price.id)}
+                          className="bg-blue-500 text-white px-4 py-1 rounded mr-2"
+                        >
+                          Edit
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDeletePrice(price.id)}
+                        className="bg-red-500 text-white px-4 py-1 rounded"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={handleCloseViewPricesModal}
+                  className="bg-gray-500 text-white px-4 py-2 rounded"
                 >
-                  <div>
-                    <p>
-                      <span className="font-semibold">Period:</span>{" "}
-                      {price.period}
-                    </p>
-                    <p>
-                      <span className="font-semibold">Price:</span>{" "}
-                      {price.price}
-                    </p>
-                  </div>
-                  <div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleUpdatePrice(price.id, {
-                          period: "Updated Period",
-                          price: 100,
-                        });
-                      }}
-                      className="bg-blue-500 text-white px-4 py-1 rounded mr-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeletePrice(price.id);
-                      }}
-                      className="bg-red-500 text-white px-4 py-1 rounded"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={handleCloseViewPricesModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded"
-              >
-                Close
-              </button>
+                  Close
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </dialog>
       )}
+
       <div className="flex justify-between p-4 ">
         <Link to="/orders">
           <button className="mx-16 btn btn-outline btn-accent font-bold py-2 px-4 rounded">
@@ -417,7 +484,6 @@ const HomePage = () => {
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               ></textarea>
-              {/* if there is a button in form, it will submit the form */}
               <div className="flex gap-36 items-center text-white">
                 <button
                   type="submit"
@@ -488,40 +554,6 @@ const HomePage = () => {
           </li>
         ))}
       </ul>
-      {/* Dialog for adding price */}
-      {/* {showDialog && (
-        <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-50">
-          <div className="bg-slate-400 p-8 rounded-lg">
-            <h2 className="text-xl font-bold mb-4 text-black">Add Price</h2>
-            {priceInputs.map((input, index) => (
-              <div key={index}>
-                <input
-                  type="text"
-                  value={input.price}
-                  onChange={(e) => handleChange(index, "price", e.target.value)}
-                  placeholder="Enter price"
-                  className="input input-bordered input-success w-52 max-w-xs"
-                />
-                <input
-                  type="text"
-                  value={input.period}
-                  onChange={(e) =>
-                    handleChange(index, "period", e.target.value)
-                  }
-                  placeholder="Enter period"
-                  className="input input-bordered mx-10 input-success w-52 max-w-xs mt-2"
-                />
-              </div>
-            ))}
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded mt-4"
-              onClick={handleSubmits}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 };
