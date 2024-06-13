@@ -12,6 +12,98 @@ const HomePage = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [brandName, setBrandName] = useState("");
   const [bio, setBio] = useState("");
+  const [subscriptionId, setSubscriptionId] = useState(null);
+
+  const [isViewPricesModalOpen, setIsViewPricesModalOpen] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [period, setPeriod] = useState("");
+  const [price, setPrice] = useState("");
+  const [prices, setPrices] = useState([]);
+  const [selectedSubscription, setSelectedSubscription] = useState(null);
+  const fetchPrices = async (subscriptionId) => {
+    const { data, error } = await supabase
+      .from("subscription_prices")
+      .select("*")
+      .eq("subscription_id", subscriptionId);
+
+    if (error) {
+      console.error("Error fetching prices:", error);
+    } else {
+      setPrices(data);
+    }
+  };
+
+  const handleOpenModal = (subscriptionId) => {
+    setSubscriptionId(subscriptionId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSubscriptionId(null);
+    setPeriod("");
+    setPrice("");
+  };
+
+  const handleAddPrice = async () => {
+    if (!subscriptionId) {
+      console.error("Subscription ID is required.");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("subscription_prices")
+      .insert([{ subscription_id: subscriptionId, period, price }]);
+
+    if (error) {
+      console.error("Error adding data:", error);
+    } else {
+      console.log("Data added successfully:", data);
+    }
+
+    handleCloseModal();
+  };
+
+  const handleOpenViewPricesModal = async (subscriptionId) => {
+    setSelectedSubscription(subscriptionId);
+    setIsViewPricesModalOpen(true);
+    await fetchPrices(subscriptionId);
+  };
+
+  const handleCloseViewPricesModal = () => {
+    setIsViewPricesModalOpen(false);
+    setPrices([]);
+    setSelectedSubscription(null);
+  };
+
+  const handleUpdatePrice = async (priceId, newData) => {
+    const { data, error } = await supabase
+      .from("subscription_prices")
+      .update(newData)
+      .eq("id", priceId);
+
+    if (error) {
+      console.error("Error updating price:", error);
+    } else {
+      console.log("Price updated successfully:", data);
+      fetchPrices(selectedSubscription); // Refresh prices after updating
+    }
+  };
+
+  const handleDeletePrice = async (priceId) => {
+    const { error } = await supabase
+      .from("subscription_prices")
+      .delete()
+      .eq("id", priceId);
+
+    if (error) {
+      console.error("Error deleting price:", error);
+    } else {
+      console.log("Price deleted successfully.");
+      fetchPrices(selectedSubscription); // Refresh prices after deleting
+    }
+  };
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -139,6 +231,106 @@ const HomePage = () => {
   return (
     <div>
       <Navbar />
+
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <h2 className="text-xl mb-4">Add Price</h2>
+            <div className="mb-4">
+              <label className="block text-gray-700">Period</label>
+              <input
+                type="text"
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mt-1"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Price</label>
+              <input
+                type="text"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded mt-1"
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={handleCloseModal}
+                className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddPrice}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isViewPricesModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <h2 className="text-xl mb-4">
+              Prices for Subscription {selectedSubscription}
+            </h2>
+            <ul>
+              {prices.map((price) => (
+                <li
+                  key={price.id}
+                  className="flex justify-between items-center border-b border-gray-300 py-2"
+                >
+                  <div>
+                    <p>
+                      <span className="font-semibold">Period:</span>{" "}
+                      {price.period}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Price:</span>{" "}
+                      {price.price}
+                    </p>
+                  </div>
+                  <div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUpdatePrice(price.id, {
+                          period: "Updated Period",
+                          price: 100,
+                        });
+                      }}
+                      className="bg-blue-500 text-white px-4 py-1 rounded mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeletePrice(price.id);
+                      }}
+                      className="bg-red-500 text-white px-4 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleCloseViewPricesModal}
+                className="bg-gray-500 text-white px-4 py-2 rounded"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex justify-between p-4 ">
         <Link to="/orders">
           <button className="mx-16 btn btn-outline btn-accent font-bold py-2 px-4 rounded">
@@ -278,11 +470,58 @@ const HomePage = () => {
                   style={{ filter: "brightness(0) invert(1)" }}
                   onClick={() => handleDeleteItem(item.id)}
                 />
+                <button
+                  class="px-10 btn btn-outline btn-accent"
+                  onClick={() => handleOpenModal(item.id)}
+                >
+                  Add Price
+                </button>
+
+                <button
+                  className="px-10 btn btn-outline btn-accent"
+                  onClick={() => handleOpenViewPricesModal(item.id)}
+                >
+                  View Prices
+                </button>
               </div>
             </div>
           </li>
         ))}
       </ul>
+      {/* Dialog for adding price */}
+      {/* {showDialog && (
+        <div className="fixed inset-0 flex items-center justify-center  bg-black bg-opacity-50">
+          <div className="bg-slate-400 p-8 rounded-lg">
+            <h2 className="text-xl font-bold mb-4 text-black">Add Price</h2>
+            {priceInputs.map((input, index) => (
+              <div key={index}>
+                <input
+                  type="text"
+                  value={input.price}
+                  onChange={(e) => handleChange(index, "price", e.target.value)}
+                  placeholder="Enter price"
+                  className="input input-bordered input-success w-52 max-w-xs"
+                />
+                <input
+                  type="text"
+                  value={input.period}
+                  onChange={(e) =>
+                    handleChange(index, "period", e.target.value)
+                  }
+                  placeholder="Enter period"
+                  className="input input-bordered mx-10 input-success w-52 max-w-xs mt-2"
+                />
+              </div>
+            ))}
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded mt-4"
+              onClick={handleSubmits}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      )} */}
     </div>
   );
 };

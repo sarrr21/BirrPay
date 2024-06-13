@@ -3,7 +3,7 @@ import { supabase } from "./constants";
 import { useState } from "react";
 import { useEffect } from "react";
 import Navbar from "./NavBar";
-
+import axios from "axios";
 const OrderDetail = () => {
   const handleLogout = () => {
     return <Navigate to="/login" replace />;
@@ -72,7 +72,32 @@ const OrderDetail = () => {
     fetchOrderDetails();
   }, [id]);
 
-  console.log(order);
+  const sendEmail = () => {
+    const emailData = {
+      toEmail: order?.subscription_email,
+      subject: `Subscription Confirmation for ${order?.brand_name}`,
+      order: {
+        fullname: order?.fullname,
+        brand_name: order?.brand_name,
+        subscription_price: order?.subscription_price,
+        subscription_period: order?.subscription_period,
+      },
+    };
+
+    console.log(emailData);
+
+    axios
+      .post(
+        "https://membership-backend-sy1t.onrender.com/send-email",
+        emailData
+      )
+      .then((response) => {
+        console.log("Email successfully sent!", response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error sending the email", error);
+      });
+  };
 
   return (
     <div className="">
@@ -135,7 +160,10 @@ const OrderDetail = () => {
             </div>
           </div>
           <div className="item-center">
-            <button className="bg-emerald-400 text-black rounded-md p-2 mt-4">
+            <button
+              className="bg-emerald-400 text-black rounded-md p-2 mt-4"
+              onClick={sendEmail}
+            >
               Subscription Done
             </button>
           </div>
